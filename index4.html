@@ -53,6 +53,7 @@
                         <!-- <a class="waves-effect waves-light btn" @click="years_php ++">+</a>
                         <a class="waves-effect waves-light btn" @click="years_php --" v-if="years_php > 0">-</a> -->
 
+                        <!-- <a class="waves-effect waves-light btn" @click="add" v-bind:style="addfontsize()">+</a> -->
                         <a class="waves-effect waves-light btn" @click="add" :style="addfontsize()">+</a>
                         <a class="waves-effect waves-light btn" @click="subtract()">-</a>
                     </p>
@@ -87,7 +88,7 @@
 
                     addfontsize: function () {
                         return {
-                            'font-size': 10+this.years_php+'px'
+                            'font-size': 10 + (this.years_php * 5) + 'px'
                         };
                     }
 
