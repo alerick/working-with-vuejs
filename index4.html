@@ -44,54 +44,74 @@
             <div class="row">
                 <div class="input-field col s3">
                     <p>
-                        Cuantos año de experiencia tiene con PHP?
+                        <input name="group1" type="radio" id="test1" v-model="gender" value="f" class="with-gap"/>
+                        <label for="test1">female</label>
+                        <input name="group1" type="radio" id="test2" v-model="gender" value="m" class="with-gap"/>
+                        <label for="test2">male</label>
                     </p>
-
                     <p>
-                        Respuesta: <strong>{{ years_php }}</strong>
-
-                        <!-- <a class="waves-effect waves-light btn" @click="years_php ++">+</a>
-                        <a class="waves-effect waves-light btn" @click="years_php --" v-if="years_php > 0">-</a> -->
-
-                        <!-- <a class="waves-effect waves-light btn" @click="add" v-bind:style="addfontsize()">+</a> -->
-                        <a class="waves-effect waves-light btn" @click="add" :style="addfontsize()">+</a>
-                        <a class="waves-effect waves-light btn" @click="subtract()">-</a>
+                        <hello-world :gender="gender"></hello-world>
                     </p>
                 </div>
             </div>
-
+            <div class="row">
+                <div class="input-field col s3">
+                    <years-exp :years.sync="years_php" tech="PHP"></years-exp>
+                    <years-exp :years.sync="years_js" tech="JS"></years-exp>
+                </div>
+            </div>
         </form>
-
-        <p v-else>
-            Por favor escriba su nombre
-        </p>
 
         {{ $data | json }}
 
+        <script type="text/template" id="hello_world">
+            {{ gender == 'm' ? 'bienvendo' : 'bienvenda'}}
+        </script>
+
+        <script type="text/template" id="years_template">
+            <p>
+                Cuantos año de experiencia tiene con {{ tech }}?
+            </p>
+            <p>
+                Respuesta: <strong>{{ years }}</strong>
+
+                <a class="waves-effect waves-light btn" @click="add">+</a>
+                <a class="waves-effect waves-light btn" @click="subtract">-</a>
+            </p>
+        </script>
+
         <script type="text/javascript">
+
+            Vue.component('hello-world', {
+                template:'#hello_world',
+                props: {
+                    gender:{type: String}
+                }
+            });
+
+            Vue.component('years-exp', {
+                template:'#years_template',
+                methods: {
+                    add: function () {
+                        this.years ++;
+                    },
+
+                    subtract: function () {
+                        if (this.years > 0) {
+                            this.years --;
+                        }
+                    },
+                },
+                props: ['years', 'tech']
+            });
+
 
             new Vue({
                 el: "body",
                 data: {
                     years_php: 0,
-                },
-                methods: {
-                    add: function () {
-                        this.years_php ++;
-                    },
-
-                    subtract: function () {
-                        if (this.years_php > 0) {
-                            this.years_php --;
-                        }
-                    },
-
-                    addfontsize: function () {
-                        return {
-                            'font-size': 10 + (this.years_php * 5) + 'px'
-                        };
-                    }
-
+                    years_js: 0,
+                    gender:"m"
                 }
             })
 
