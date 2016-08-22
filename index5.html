@@ -40,78 +40,62 @@
                 </ul>
           </div>
         </nav>
-        <form>
+
+        <div class="container">
             <div class="row">
-                <div class="input-field col s3">
-                    <p>
-                        <input name="group1" type="radio" id="test1" v-model="gender" value="f" class="with-gap"/>
-                        <label for="test1">female</label>
-                        <input name="group1" type="radio" id="test2" v-model="gender" value="m" class="with-gap"/>
-                        <label for="test2">male</label>
-                    </p>
-                    <p>
-                        <hello-world :gender="gender"></hello-world>
-                    </p>
+                <div class="col s6">
+
+                    <ul v-for="note in notes">
+                        <li>
+                            {{ $index + 1 }}: {{ note.text }} <b>by {{ note.author }}</b>
+                        </li>
+                    </ul>
+
                 </div>
             </div>
+            <hr/>
             <div class="row">
-                <div class="input-field col s3">
-                    <years-exp :years.sync="years_php" tech="PHP"></years-exp>
-                    <years-exp :years.sync="years_js" tech="JS"></years-exp>
-                </div>
+                <form @submit.prevent="create_note" class="col s12">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <textarea v-model="new_note.text" class="materialize-textarea"></textarea>
+                            <label for="textarea1">Textarea</label>
+                            <button type="submit" class="waves-effect waves-light btn">add note</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </form>
 
-        <pre>{{ $data | json }}</pre>
-
-        <script type="text/template" id="hello_world">
-            {{ gender == 'm' ? 'bienvendo' : 'bienvenda'}}
-        </script>
-
-        <script type="text/template" id="years_template">
-            <p>
-                Cuantos año de experiencia tiene con {{ tech }}?
-            </p>
-            <p>
-                Respuesta: <strong>{{ years }}</strong>
-
-                <a class="waves-effect waves-light btn" @click="add">+</a>
-                <a class="waves-effect waves-light btn" @click="subtract">-</a>
-            </p>
-        </script>
+            <pre>{{ $data | json }}</pre>
+        </div>
 
         <script type="text/javascript">
-
-            Vue.component('hello-world', {
-                template:'#hello_world',
-                props: {
-                    gender:{type: String}
-                }
-            });
-
-            Vue.component('years-exp', {
-                template:'#years_template',
-                methods: {
-                    add: function () {
-                        this.years ++;
-                    },
-
-                    subtract: function () {
-                        if (this.years > 0) {
-                            this.years --;
-                        }
-                    },
-                },
-                props: ['years', 'tech']
-            });
-
 
             new Vue({
                 el: "body",
                 data: {
-                    years_php: 0,
-                    years_js: 0,
-                    gender:"m"
+                    notes:
+                    [
+                        {
+                            text: 'Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                            author: 'ale'
+                        },
+                        {
+                            text: 'Ut enim ad minim veniam, Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+                            author: 'erick'
+                        },
+                        {
+                            text: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                            author: 'eduardo'
+                        }
+                    ],
+                    new_note:{text:'', author:'ale'}
+                },
+                methods: {
+                    create_note: function () {
+                        this.notes.push(this.new_note);
+                        this.new_note = {text:'', author:'ale'};
+                    }
                 }
             })
 
